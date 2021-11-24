@@ -16,17 +16,5 @@ namespace TesteBackendEnContact.Api.Resources
         public string ZipCode { get; set; }
         public string Website { get; set; }
         public string Description { get; set; }
-
-        /*
-        public Company ToCompany() => new Company()
-        {
-            Id = Id,
-            Name = Name,
-            Cnpj = Cnpj,
-            Email = Email,
-            Phone = Phone,
-            Address = Address
-        };
-        */
     }
 }
