@@ -6,6 +6,8 @@ using TesteBackendEnContact.Core.Interfaces.Services;
 using AutoMapper;
 using TesteBackendEnContact.Core.Models;
 using System;
+using TesteBackendEnContact.Core;
+using TesteBackendEnContact.Core.Pagination;
 
 namespace TesteBackendEnContact.Api.Controllers
 {
@@ -20,9 +22,15 @@ namespace TesteBackendEnContact.Api.Controllers
             _companyService = companyService;
             _mapper = mapper;
         }
+        [HttpGet]
+        public async Task<Paginator<Company>> GetAllCompanies([FromQuery] QueryParams queryParams)
+        {
+            return await _companyService.GetAllCompaniesPaginated(queryParams.Page, queryParams.PostsPerPage);
+        }
 
-        [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<CompanyResource>>> GetAllCompanies()
+        //[HttpGet("")]
+        [NonAction]
+        public async Task<ActionResult<IEnumerable<CompanyResource>>> Old()
         {
             var companies = await _companyService.GetAllCompanies();
             var companiesResource = _mapper.Map<IEnumerable<Company>, IEnumerable<CompanyResource>>(companies);
