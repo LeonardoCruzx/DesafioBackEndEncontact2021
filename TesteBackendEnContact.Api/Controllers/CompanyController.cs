@@ -1,48 +1,45 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TesteBackendEnContact.Controllers.Models;
-using TesteBackendEnContact.Core.Interface.ContactBook.Company;
-using TesteBackendEnContact.Repository.Interface;
-using TesteBackendEnContact.Core;
+using Microsoft.AspNetCore.Mvc;
+using TesteBackendEnContact.Api.Resources;
+using TesteBackendEnContact.Core.Interfaces.Services;
+using AutoMapper;
+using TesteBackendEnContact.Core.Models;
 using System;
 
-namespace TesteBackendEnContact.Controllers
+namespace TesteBackendEnContact.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CompanyController : ControllerBase
     {
-        private readonly ILogger<CompanyController> _logger;
-
-        public CompanyController(ILogger<CompanyController> logger)
+        private readonly ICompanyService _companyService;
+        private readonly IMapper _mapper;
+        public CompanyController(ICompanyService companyService, IMapper mapper)
         {
-            _logger = logger;
+            _companyService = companyService;
+            _mapper = mapper;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ICompany>> Post(SaveCompanyRequest company, [FromServices] ICompanyRepository companyRepository)
+        [HttpPost("")]
+        public async Task<ActionResult<CompanyResource>> CreateCompany([FromBody] CompanyResource companyResource)
         {
-            return Ok(await companyRepository.SaveAsync(company.ToCompany()));
+            Console.WriteLine("CompanyController.CreateCompany");
+            Console.WriteLine(companyResource.Name);
+            var companyCreated = await _companyService.CreateCompany(_mapper.Map<CompanyResource, Company>(companyResource));
+            var companyResourceCreated = _mapper.Map<Company, CompanyResource>(companyCreated);
+            return Ok(companyResourceCreated);
         }
-
-        [HttpDelete]
-        public async Task Delete(int id, [FromServices] ICompanyRepository companyRepository)
+        
+        [HttpGet("")]
+        public async Task<ActionResult<IEnumerable<CompanyResource>>> GetAllCompanies()
         {
-            await companyRepository.DeleteAsync(id);
-        }
 
-        [HttpGet]
-        public async Task<IEnumerable<ICompany>> Get([FromServices] ICompanyRepository companyRepository)
-        {
-            return await companyRepository.GetAllAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ICompany> Get(int id, [FromServices] ICompanyRepository companyRepository)
-        {
-            return await companyRepository.GetAsync(id);
+            return Ok(new List<CompanyResource>() {
+                new CompanyResource() { Id = 1, Name = "Company 1" },
+                new CompanyResource() { Id = 2, Name = "Company 2" },
+                new CompanyResource() { Id = 3, Name = "Company 3" }
+            });
         }
     }
 }

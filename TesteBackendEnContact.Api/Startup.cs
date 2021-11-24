@@ -5,11 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 using System;
-using TesteBackendEnContact.Database;
 using TesteBackendEnContact.Repository;
 using TesteBackendEnContact.Repository.Interface;
+using TesteBackendEnContact.Data;
+using TesteBackendEnContact.Core.Interfaces.Services;
+using TesteBackendEnContact.Services;
+using TesteBackendEnContact.Core.Interfaces;
+using AutoMapper;
 
 namespace TesteBackendEnContact
 {
@@ -31,16 +36,12 @@ namespace TesteBackendEnContact
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TesteBackendEnContact", Version = "v1" });
             });
 
-            services.AddFluentMigratorCore()
-                    .ConfigureRunner(rb => rb
-                        .AddSQLite()
-                        .WithGlobalConnectionString(Configuration.GetConnectionString("DefaultConnection"))
-                        .ScanIn(typeof(Startup).Assembly).For.Migrations())
-                    .AddLogging(lb => lb.AddFluentMigratorConsole());
+            services.AddDbContext<TesteBackendEnContactContext>(options => options.UseSqlite("Data Source=TesteBackendEnContact.db"));
+            
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ICompanyService, CompanyService>();
 
-            services.AddSingleton(new DatabaseConfig { ConnectionString = Configuration.GetConnectionString("DefaultConnection") });
-            services.AddScoped<IContactBookRepository, ContactBookRepository>();
-            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,9 +62,6 @@ namespace TesteBackendEnContact
             {
                 endpoints.MapControllers();
             });
-
-            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-            runner.MigrateUp();
         }
     }
 }
