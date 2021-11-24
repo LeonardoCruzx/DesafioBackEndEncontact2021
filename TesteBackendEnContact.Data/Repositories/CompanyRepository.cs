@@ -4,7 +4,7 @@ using TesteBackendEnContact.Core.Models;
 using TesteBackendEnContact.Core.Repositories;
 using TesteBackendEnContact.Data.Repositories;
 
-namespace TesteBackendEnContact.Data
+namespace TesteBackendEnContact.Data.Repositories
 {
     public class CompanyRepository : Repository<Company>, ICompanyRepository
     {
