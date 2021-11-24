@@ -21,25 +21,45 @@ namespace TesteBackendEnContact.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("")]
-        public async Task<ActionResult<CompanyResource>> CreateCompany([FromBody] CompanyResource companyResource)
-        {
-            Console.WriteLine("CompanyController.CreateCompany");
-            Console.WriteLine(companyResource.Name);
-            var companyCreated = await _companyService.CreateCompany(_mapper.Map<CompanyResource, Company>(companyResource));
-            var companyResourceCreated = _mapper.Map<Company, CompanyResource>(companyCreated);
-            return Ok(companyResourceCreated);
-        }
-        
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<CompanyResource>>> GetAllCompanies()
         {
+            var companies = await _companyService.GetAllCompanies();
+            var companiesResource = _mapper.Map<IEnumerable<Company>, IEnumerable<CompanyResource>>(companies);
 
-            return Ok(new List<CompanyResource>() {
-                new CompanyResource() { Id = 1, Name = "Company 1" },
-                new CompanyResource() { Id = 2, Name = "Company 2" },
-                new CompanyResource() { Id = 3, Name = "Company 3" }
-            });
+            return Ok(companiesResource);
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CompanyResource>> GetCompanyById(int id)
+        {
+            var company = await _companyService.GetCompanyById(id);
+            var companyResource = _mapper.Map<Company, CompanyResource>(company);
+
+            return Ok(companyResource);
+        }
+
+        [HttpPost("")]
+        public async Task<ActionResult<CompanyResource>> CreateCompany([FromBody] CompanyResource companyResource)
+        {
+            var companyCreated = await _companyService.CreateCompany(_mapper.Map<CompanyResource, Company>(companyResource));
+            var companyResourceCreated = _mapper.Map<Company, CompanyResource>(companyCreated);
+
+            return Ok(companyResourceCreated);
+        }
+        
+        [HttpPut("{id}")]
+        public async Task<ActionResult<CompanyResource>> UpdateCompany(int id, [FromBody] CompanyResource companyResource)
+        {
+            var companyToBeUpdated = await _companyService.GetCompanyById(id);
+            
+            if (companyToBeUpdated == null)
+                return NotFound();
+
+            var company = _mapper.Map<CompanyResource, Company>(companyResource);
+            await _companyService.UpdateCompany(companyToBeUpdated, company);
+            var companyResourceUpdated = _mapper.Map<Company, CompanyResource>(company);
+
+            return Ok(companyResourceUpdated);
         }
     }
 }

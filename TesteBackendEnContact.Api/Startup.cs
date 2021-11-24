@@ -8,8 +8,6 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 using System;
-using TesteBackendEnContact.Repository;
-using TesteBackendEnContact.Repository.Interface;
 using TesteBackendEnContact.Data;
 using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Services;
