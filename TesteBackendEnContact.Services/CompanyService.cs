@@ -21,24 +21,21 @@ namespace TesteBackendEnContact.Services
             return newCompany;
         }
 
-        public Task DeleteCompany(Company company)
+        public async Task<IEnumerable<Company>> GetAllCompanies() => await _unitOfWork.Companies.GetAllAsync();
+        public async Task<Company> GetCompanyById(int id) => await _unitOfWork.Companies.GetByIdAsync(id);
+        public async Task DeleteCompany(Company company)
         {
-            throw new System.NotImplementedException();
+            _unitOfWork.Companies.Remove(company);
+            await _unitOfWork.CommitAsync();
         }
 
-        public Task<IEnumerable<Company>> GetAllArtists()
+        public async Task UpdateCompany(Company companyToBeUpdated, Company company)
         {
-            throw new System.NotImplementedException();
-        }
+            companyToBeUpdated.Name = company.Name;
+            companyToBeUpdated.Email = company.Email;
+            companyToBeUpdated.Phone = company.Phone;
 
-        public Task<Company> GetCompanyById(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateCompany(Company companyToBeUpdated, Company company)
-        {
-            throw new System.NotImplementedException();
+            await _unitOfWork.CommitAsync();
         }
     }
 }

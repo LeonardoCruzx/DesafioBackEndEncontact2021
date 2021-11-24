@@ -6,7 +6,7 @@ namespace TesteBackendEnContact.Core.Interfaces.Services
 {
     public interface ICompanyService
     {
-        Task<IEnumerable<Company>> GetAllArtists();
+        Task<IEnumerable<Company>> GetAllCompanies();
         Task<Company> GetCompanyById(int id);
         Task<Company> CreateCompany(Company newCompany);
         Task UpdateCompany(Company companyToBeUpdated, Company company);

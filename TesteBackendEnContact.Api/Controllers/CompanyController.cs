@@ -51,7 +51,7 @@ namespace TesteBackendEnContact.Api.Controllers
         public async Task<ActionResult<CompanyResource>> UpdateCompany(int id, [FromBody] CompanyResource companyResource)
         {
             var companyToBeUpdated = await _companyService.GetCompanyById(id);
-            
+
             if (companyToBeUpdated == null)
                 return NotFound();
 
@@ -60,6 +60,19 @@ namespace TesteBackendEnContact.Api.Controllers
             var companyResourceUpdated = _mapper.Map<Company, CompanyResource>(company);
 
             return Ok(companyResourceUpdated);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCompany(int id)
+        {
+            var companyToBeDeleted = await _companyService.GetCompanyById(id);
+
+            if (companyToBeDeleted == null)
+                return NotFound();
+
+            await _companyService.DeleteCompany(companyToBeDeleted);
+
+            return NoContent();
         }
     }
 }
