@@ -10,8 +10,8 @@ namespace TesteBackendEnContact.Core.Interfaces.Services
         Task<Paginator<ContactBook>> GetAllContactBooksPaginated(int page = 1, int postsPerPage = 10);
         Task<IEnumerable<ContactBook>> GetAllContactBooks();
         Task<ContactBook> GetContactBookById(int id);
-        Task<ContactBook> CreateContactBook(ContactBook newCompany);
-        Task UpdateContactBook(ContactBook companyToBeUpdated, ContactBook company);
-        Task DeleteContactBook(ContactBook company);
+        Task<ContactBook> CreateContactBook(ContactBook newContactBook);
+        Task UpdateContactBook(ContactBook contactBookToBeUpdated, ContactBook contactBook);
+        Task DeleteContactBook(ContactBook contactBook);
     }
 }

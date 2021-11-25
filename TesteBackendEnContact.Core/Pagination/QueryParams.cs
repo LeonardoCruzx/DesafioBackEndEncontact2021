@@ -8,7 +8,7 @@ namespace TesteBackendEnContact.Core.Pagination
 
         public int Page { get; set; } = 1;
 
-        public int PostsPerPage
+        public int ItemsPerPage
         {
             get
             {
