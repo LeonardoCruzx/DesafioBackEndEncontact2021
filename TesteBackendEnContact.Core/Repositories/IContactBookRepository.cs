@@ -6,6 +6,6 @@ namespace TesteBackendEnContact.Core.Repositories
 {
     public interface IContactBookRepository : IRepository<ContactBook>
     {
-        Task<Paginator<ContactBook>> GetAllContactBooksPaginated(int page = 1, int postsPerPage = 10);
+        Task<Paginator<ContactBook>> GetAllContactBooksPaginated(int page = 1, int resultsPerPage = 10);
     }
 }
