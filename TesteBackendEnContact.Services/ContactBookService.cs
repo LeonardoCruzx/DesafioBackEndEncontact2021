@@ -16,34 +16,30 @@ namespace TesteBackendEnContact.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ContactBook> CreateContactBook(ContactBook newCompany)
+        public async Task<ContactBook> CreateContactBook(ContactBook contactBook)
         {
-            await _unitOfWork.ContactBooks.AddAsync(newCompany);
+            await _unitOfWork.ContactBooks.AddAsync(contactBook);
             await _unitOfWork.CommitAsync();
-            return newCompany;
+            return contactBook;
         }
         public async Task<Paginator<ContactBook>> GetAllContactBooksPaginated(int page = 1, int postsPerPage = 10)
         {
             return await this._unitOfWork.ContactBooks.GetAllContactBooksPaginated(page, postsPerPage);
         }
-        public Task DeleteContactBook(ContactBook company)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public Task<IEnumerable<ContactBook>> GetAllContactBooks()
         {
             throw new System.NotImplementedException();
         }
-
-        public Task<ContactBook> GetContactBookById(int id)
+        public async Task<ContactBook> GetContactBookById(int id) => await _unitOfWork.ContactBooks.GetByIdAsync(id);
+        public async Task DeleteContactBook(ContactBook contactBook)
         {
-            throw new System.NotImplementedException();
+            _unitOfWork.ContactBooks.Remove(contactBook);
+            await _unitOfWork.CommitAsync();
         }
-
-        public Task UpdateContactBook(ContactBook companyToBeUpdated, ContactBook company)
+        public async Task UpdateContactBook(ContactBook contactBookToBeUpdated, ContactBook contactBook)
         {
-            throw new System.NotImplementedException();
+            ///TODO: Implement update
+            await _unitOfWork.CommitAsync();
         }
     }
 }
