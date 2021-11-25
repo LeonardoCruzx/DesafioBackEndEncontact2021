@@ -40,6 +40,7 @@ namespace TesteBackendEnContact
             
             services.AddTransient<ICompanyService, CompanyService>();
             services.AddTransient<IContactBookService, ContactBookService>();
+            services.AddTransient<IContactService, ContactService>();
 
             services.AddAutoMapper(typeof(Startup));
         }
