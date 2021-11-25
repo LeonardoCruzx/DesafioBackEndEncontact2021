@@ -39,9 +39,6 @@ namespace TesteBackendEnContact.Services
             throw new System.NotImplementedException();
         }
 
-        Task<IEnumerable<Contact>> IContactService.GetAllContacts()
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<IEnumerable<Contact>> GetAllContacts() => await _unitOfWork.Contacts.GetAllAsync();
     }
 }

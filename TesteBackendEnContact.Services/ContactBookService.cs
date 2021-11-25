@@ -41,5 +41,7 @@ namespace TesteBackendEnContact.Services
             ///TODO: Implement update
             await _unitOfWork.CommitAsync();
         }
+
+        public async Task<ContactBook> GetContactBookByIdWithContacts(int id) => await _unitOfWork.ContactBooks.GetContactBookByIdWithContacts(id);
     }
 }
