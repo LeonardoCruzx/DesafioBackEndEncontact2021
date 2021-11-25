@@ -13,6 +13,7 @@ using TesteBackendEnContact.Core.Pagination;
 using CsvHelper;
 using System;
 using Microsoft.AspNetCore.Http;
+using TesteBackendEnContact.Api.Validators;
 
 namespace TesteBackendEnContact.Api.Controllers
 {
@@ -48,6 +49,12 @@ namespace TesteBackendEnContact.Api.Controllers
         [HttpPost("")]
         public async Task<ActionResult<ContactResource>> CreateContact([FromBody] SaveContactResource ContactResource)
         {
+            var validator = new SaveContactResourceValidator();
+            var validationResult = await validator.ValidateAsync(ContactResource);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
             var ContactCreated = await _contactService.CreateContact(_mapper.Map<SaveContactResource, Contact>(ContactResource));
             var ContactResourceCreated = _mapper.Map<Contact, ContactResource>(ContactCreated);
 
@@ -82,15 +89,26 @@ namespace TesteBackendEnContact.Api.Controllers
             return NoContent();
         }
 
-        [HttpPost("AddContactsByCsv")]
+        [HttpPost("ImportContactsFromCsv")]
 
-        public async Task<ActionResult> AddContactsByCsv([FromForm] IFormFile file)
+        public async Task<ActionResult> ImportContactsFromCsv([FromForm] IFormFile file)
         {
             var streamReader = new StreamReader(file.OpenReadStream());
             var csvReader = new CsvReader(streamReader, System.Globalization.CultureInfo.CurrentCulture);
-            var contacts = csvReader.GetRecords<CsvSaveContactResource>();
+            
+            var contacts = csvReader.GetRecords<SaveContactResource>();
+            
+            var validator = new SaveContactResourceValidator();
+            
+            foreach (var contact in contacts)
+            {
+                var validationResult = await validator.ValidateAsync(contact);
 
-            ///TODO: Validar se o csv está no formato correto
+                if (validationResult.IsValid)
+                    await _contactService.CreateContact(_mapper.Map<SaveContactResource, Contact>(contact));
+                
+            }
+
             return Ok();
         }
     }
