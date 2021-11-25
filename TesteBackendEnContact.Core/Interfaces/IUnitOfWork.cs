@@ -8,6 +8,7 @@ namespace TesteBackendEnContact.Core.Interfaces
     {
         ICompanyRepository Companies { get; }
         IContactBookRepository ContactBooks { get; }
+        IContactRepository Contacts { get; }
         Task<int> CommitAsync();
     }
 }

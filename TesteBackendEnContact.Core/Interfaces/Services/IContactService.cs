@@ -8,6 +8,7 @@ namespace TesteBackendEnContact.Core.Interfaces.Services
     public interface IContactService
     {
         Task<Paginator<Contact>> GetAllContactsPaginated(int page = 1, int postsPerPage = 10);
+        Task<Paginator<Contact>> GetAllContactsPaginatedWithContactBook(int page = 1, int postsPerPage = 10);
         Task<IEnumerable<Contact>> GetAllContacts();
         Task<Contact> GetContactById(int id);
         Task<Contact> CreateContact(Contact newCompany);
