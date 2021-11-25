@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,10 @@ using TesteBackendEnContact.Core.Filters;
 using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Core.Models;
 using TesteBackendEnContact.Core.Pagination;
+
+using CsvHelper;
+using System;
+using Microsoft.AspNetCore.Http;
 
 namespace TesteBackendEnContact.Api.Controllers
 {
@@ -24,9 +29,9 @@ namespace TesteBackendEnContact.Api.Controllers
         }
 
         [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<ContactResource>>> GetAllContacts([FromQuery] ContactFilter filter)
+        public async Task<ActionResult<IEnumerable<ContactResource>>> GetAllContacts([FromQuery] ContactFilter filter, [FromQuery] QueryParams queryParams)
         {
-            var companies = await _contactService.GetAllContactsPaginatedWithContactBook(filter);
+            var companies = await _contactService.GetAllContactPaginatedWithContactBookAndCompany(filter, queryParams.Page, queryParams.ItemsPerPage);
             var companiesResource = new Paginator<ContactResource>(_mapper.Map<IEnumerable<Contact>, IEnumerable<ContactResource>>(companies.Data), companies.Metadata);
 
             return Ok(companiesResource);
@@ -75,6 +80,18 @@ namespace TesteBackendEnContact.Api.Controllers
             await _contactService.DeleteContact(ContactToBeDeleted);
 
             return NoContent();
+        }
+
+        [HttpPost("AddContactsByCsv")]
+
+        public async Task<ActionResult> AddContactsByCsv([FromForm] IFormFile file)
+        {
+            var streamReader = new StreamReader(file.OpenReadStream());
+            var csvReader = new CsvReader(streamReader, System.Globalization.CultureInfo.CurrentCulture);
+            var contacts = csvReader.GetRecords<CsvSaveContactResource>();
+
+            ///TODO: Validar se o csv está no formato correto
+            return Ok();
         }
     }
 }
