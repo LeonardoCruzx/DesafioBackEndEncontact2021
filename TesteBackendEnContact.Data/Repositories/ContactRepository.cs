@@ -21,13 +21,17 @@ namespace TesteBackendEnContact.Data.Repositories
             var results = TesteBackendEnContactContext.Contacts.OrderBy(c => c.Id);
             return await Paginator<Contact>.Paginate(results, page, resultsPerPage);
         }
-        public async Task<Paginator<Contact>> GetAllContactPaginatedWithContactBook(ContactFilter filter = null, int page = 1, int resultsPerPage = 10)
+        public async Task<Paginator<Contact>> GetAllContactPaginatedWithContactBookAndCompany(ContactFilter filter = null, int page = 1, int resultsPerPage = 10)
         {
-            var results = TesteBackendEnContactContext.Contacts.ApplyFilter(filter);
-
+            var results = TesteBackendEnContactContext.Contacts.ApplyFilter(filter)
+                .Include(c => c.ContactBook)
+                .Include(c => c.Company)
+                .AsQueryable();
             
+            if (filter.CompanyName is not null)
+                results = results.Where(c => c.Company.Name.Contains(filter.CompanyName));
+
             return await Paginator<Contact>.Paginate(results, page, resultsPerPage);
-            //return await results.ToListAsync();
         }
     }
 }
