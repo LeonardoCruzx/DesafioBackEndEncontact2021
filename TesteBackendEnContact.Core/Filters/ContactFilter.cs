@@ -9,5 +9,6 @@ namespace TesteBackendEnContact.Core.Filters
         public string Phone { get; set; }
         public int? ContactBookId { get; set; }
         public int? CompanyID { get; set; }
+        public string CompanyName { get; set; }
     }
 }
