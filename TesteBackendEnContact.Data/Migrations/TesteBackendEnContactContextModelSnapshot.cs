@@ -65,6 +65,12 @@ namespace TesteBackendEnContact.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CompanyID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ContactBookId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
@@ -76,7 +82,52 @@ namespace TesteBackendEnContact.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyID");
+
+                    b.HasIndex("ContactBookId");
+
                     b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("TesteBackendEnContact.Core.Models.ContactBook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactBooks");
+                });
+
+            modelBuilder.Entity("TesteBackendEnContact.Core.Models.Contact", b =>
+                {
+                    b.HasOne("TesteBackendEnContact.Core.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TesteBackendEnContact.Core.Models.ContactBook", "ContactBook")
+                        .WithMany("Contacts")
+                        .HasForeignKey("ContactBookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("ContactBook");
+                });
+
+            modelBuilder.Entity("TesteBackendEnContact.Core.Models.ContactBook", b =>
+                {
+                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }
