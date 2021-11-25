@@ -8,7 +8,8 @@ namespace TesteBackendEnContact.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Contact> builder)
         {
-            
+            builder.Property(c => c.ContactBookId)
+                .IsRequired();
         }
     }
 }
