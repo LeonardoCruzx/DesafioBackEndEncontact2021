@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TesteBackendEnContact.Core.Models;
 using TesteBackendEnContact.Core.Pagination;
 using TesteBackendEnContact.Core.Repositories;
@@ -16,5 +18,11 @@ namespace TesteBackendEnContact.Data.Repositories
             return Paginator<ContactBook>.Paginate(results, page, resultsPerPage);
 
         }
+
+        public async Task<ContactBook> GetContactBookByIdWithContacts(int id) =>
+            await TesteBackendEnContactContext.ContactBooks
+                .Where(c => c.Id == id)
+                .Include(c => c.Contacts)
+                .FirstOrDefaultAsync();
     }
 }
