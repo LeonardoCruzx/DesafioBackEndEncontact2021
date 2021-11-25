@@ -8,5 +8,7 @@ namespace TesteBackendEnContact.Core.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public ICollection<Contact> Contacts { get; set; }
+        public int? CompanyId { get; set; }
+        public Company Company { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace TesteBackendEnContact.Core.Models
+﻿using System.Collections.Generic;
+
+namespace TesteBackendEnContact.Core.Models
 {
     public class Company
     {
@@ -14,6 +16,6 @@
         public string ZipCode { get; set; }
         public string Website { get; set; }
         public string Description { get; set; }
-        
+        public ICollection<ContactBook> ContactBooks { get; set;}
     }
 }
