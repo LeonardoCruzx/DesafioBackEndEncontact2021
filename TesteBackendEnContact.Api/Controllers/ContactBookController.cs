@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using TesteBackendEnContact.Api.Resources;
 using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Core.Models;
+using TesteBackendEnContact.Core.Pagination;
 
 namespace TesteBackendEnContact.Api.Controllers
 {
@@ -20,11 +21,12 @@ namespace TesteBackendEnContact.Api.Controllers
             _mapper = mapper;
         }
 
+
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<ContactBookResource>>> GetAllContactBooks()
         {
-            var companies = await _contactBookService.GetAllContactBooks();
-            var companiesResource = _mapper.Map<IEnumerable<ContactBook>, IEnumerable<ContactBookResource>>(companies);
+            var companies = await _contactBookService.GetAllContactBooksPaginated();
+            var companiesResource = new Paginator<ContactBookResource>(_mapper.Map<IEnumerable<ContactBook>, IEnumerable<ContactBookResource>>(companies.Data), companies.Metadata);
 
             return Ok(companiesResource);
         }

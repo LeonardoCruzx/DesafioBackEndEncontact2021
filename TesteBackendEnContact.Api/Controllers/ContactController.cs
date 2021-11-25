@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TesteBackendEnContact.Api.Resources;
+using TesteBackendEnContact.Api.Resources.Contact;
 using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Core.Models;
+using TesteBackendEnContact.Core.Pagination;
 
 namespace TesteBackendEnContact.Api.Controllers
 {
@@ -23,8 +25,8 @@ namespace TesteBackendEnContact.Api.Controllers
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<ContactResource>>> GetAllContacts()
         {
-            var companies = await _contactService.GetAllContacts();
-            var companiesResource = _mapper.Map<IEnumerable<Contact>, IEnumerable<ContactResource>>(companies);
+            var companies = await _contactService.GetAllContactsPaginatedWithContactBook();
+            var companiesResource = new Paginator<ContactResource>(_mapper.Map<IEnumerable<Contact>, IEnumerable<ContactResource>>(companies.Data), companies.Metadata);
 
             return Ok(companiesResource);
         }
@@ -38,9 +40,9 @@ namespace TesteBackendEnContact.Api.Controllers
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<ContactResource>> CreateContact([FromBody] ContactResource ContactResource)
+        public async Task<ActionResult<ContactResource>> CreateContact([FromBody] SaveContactResource ContactResource)
         {
-            var ContactCreated = await _contactService.CreateContact(_mapper.Map<ContactResource, Contact>(ContactResource));
+            var ContactCreated = await _contactService.CreateContact(_mapper.Map<SaveContactResource, Contact>(ContactResource));
             var ContactResourceCreated = _mapper.Map<Contact, ContactResource>(ContactCreated);
 
             return Ok(ContactResourceCreated);
