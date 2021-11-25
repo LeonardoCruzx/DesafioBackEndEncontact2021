@@ -37,7 +37,9 @@ namespace TesteBackendEnContact
             services.AddDbContext<TesteBackendEnContactContext>(options => options.UseSqlite("Data Source=TesteBackendEnContact.db"));
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
             services.AddTransient<ICompanyService, CompanyService>();
+            services.AddTransient<IContactBookService, ContactBookService>();
 
             services.AddAutoMapper(typeof(Startup));
         }

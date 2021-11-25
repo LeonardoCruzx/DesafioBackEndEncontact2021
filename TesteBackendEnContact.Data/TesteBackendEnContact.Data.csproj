@@ -11,6 +11,9 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.2" />
+    <PackageReference Include="X.PagedList" Version="8.1.0" />
+    <PackageReference Include="X.PagedList.Mvc" Version="8.0.7" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.1.0" />
 
     <ProjectReference Include="..\TesteBackendEnContact.Core\TesteBackendEnContact.Core.csproj" />
   </ItemGroup>

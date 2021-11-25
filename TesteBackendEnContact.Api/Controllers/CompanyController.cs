@@ -23,20 +23,13 @@ namespace TesteBackendEnContact.Api.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<Paginator<Company>> GetAllCompanies([FromQuery] QueryParams queryParams)
+        public async Task<ActionResult<Paginator<CompanyResource>>> GetAllCompanies([FromQuery] QueryParams queryParams)
         {
-            return await _companyService.GetAllCompaniesPaginated(queryParams.Page, queryParams.PostsPerPage);
+            var paginatedCompanies = await _companyService.GetAllCompaniesPaginated(queryParams.Page, queryParams.PostsPerPage);
+            var paginatedCompaniesResource =  new Paginator<CompanyResource>(_mapper.Map<IEnumerable<Company>, IEnumerable<CompanyResource>>(paginatedCompanies.Data), paginatedCompanies.Metadata);
+            return Ok(paginatedCompaniesResource);
         }
 
-        //[HttpGet("")]
-        [NonAction]
-        public async Task<ActionResult<IEnumerable<CompanyResource>>> Old()
-        {
-            var companies = await _companyService.GetAllCompanies();
-            var companiesResource = _mapper.Map<IEnumerable<Company>, IEnumerable<CompanyResource>>(companies);
-
-            return Ok(companiesResource);
-        }
         [HttpGet("{id}")]
         public async Task<ActionResult<CompanyResource>> GetCompanyById(int id)
         {

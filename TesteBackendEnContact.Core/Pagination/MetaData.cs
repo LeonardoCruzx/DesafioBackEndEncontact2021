@@ -4,7 +4,7 @@ namespace TesteBackendEnContact.Core.Pagination
     {
         public int TotalPages { get; set; }
         public int CurrentPage { get; set; }
-        public int PostsPerPage { get; set; }
-        public int TotalPosts { get; set; }
+        public int ItemsPerPage { get; set; }
+        public int TotalItems { get; set; }
     }
 }

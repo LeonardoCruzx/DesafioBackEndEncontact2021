@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using TesteBackendEnContact.Core.Interfaces;
 using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Core.Models;
+using TesteBackendEnContact.Core.Pagination;
 
 namespace TesteBackendEnContact.Services
 {
@@ -21,7 +22,10 @@ namespace TesteBackendEnContact.Services
             await _unitOfWork.CommitAsync();
             return newCompany;
         }
-
+        public async Task<Paginator<ContactBook>> GetAllContactBooksPaginated(int page = 1, int postsPerPage = 10)
+        {
+            return await this._unitOfWork.ContactBooks.GetAllContactBooksPaginated(page, postsPerPage);
+        }
         public Task DeleteContactBook(ContactBook company)
         {
             throw new System.NotImplementedException();

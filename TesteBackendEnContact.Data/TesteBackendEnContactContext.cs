@@ -6,13 +6,16 @@ namespace TesteBackendEnContact.Data
 {
     public class TesteBackendEnContactContext: DbContext
     {
-        DbSet<Company> Companies { get; set; }
-        DbSet<Contact> Contacts { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<ContactBook> ContactBooks { get; set; }
         public TesteBackendEnContactContext(DbContextOptions<TesteBackendEnContactContext> options) : base(options){}
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
+
+            modelBuilder.ApplyConfiguration(new ContactConfiguration());
         }
     }
 }

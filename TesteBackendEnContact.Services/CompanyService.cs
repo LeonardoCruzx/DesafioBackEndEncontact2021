@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TesteBackendEnContact.Core;
 using TesteBackendEnContact.Core.Interfaces;
 using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Core.Models;
+using TesteBackendEnContact.Core.Pagination;
 
 namespace TesteBackendEnContact.Services
 {
@@ -21,6 +23,10 @@ namespace TesteBackendEnContact.Services
             return newCompany;
         }
 
+        public async Task<Paginator<Company>> GetAllCompaniesPaginated(int page = 1, int postsPerPage = 10)
+        {
+            return await this._unitOfWork.Companies.GetAllCompaniesPaginated(page, postsPerPage);
+        }
         public async Task<IEnumerable<Company>> GetAllCompanies() => await _unitOfWork.Companies.GetAllAsync();
         public async Task<Company> GetCompanyById(int id) => await _unitOfWork.Companies.GetByIdAsync(id);
         public async Task DeleteCompany(Company company)
