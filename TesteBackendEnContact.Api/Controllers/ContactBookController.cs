@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
+using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
 using TesteBackendEnContact.Api.Resources;
 using TesteBackendEnContact.Core.Interfaces.Services;
@@ -74,6 +76,21 @@ namespace TesteBackendEnContact.Api.Controllers
             await _contactBookService.DeleteContactBook(ContactBookToBeDeleted);
 
             return NoContent();
+        }
+
+        [HttpGet("{id}/ExportContactsToCsv")]
+        public async Task<FileResult> ExportContactsToCsv(int id)
+        {
+            var contactBook = await _contactBookService.GetContactBookByIdWithContacts(id);
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            var csv = new CsvWriter(writer, System.Globalization.CultureInfo.CurrentCulture);
+
+            csv.WriteRecords(contactBook.Contacts);
+            writer.Flush();
+            stream.Position = 0;
+
+            return File(stream, "text/csv", "contacts.csv");
         }
     }
 }
