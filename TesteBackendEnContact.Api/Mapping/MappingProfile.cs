@@ -13,6 +13,9 @@ namespace TesteBackendEnContact.Api.Mapping
 
             CreateMap<ContactBook, ContactBookResource>();
             CreateMap<ContactBookResource, ContactBook>();
+
+            CreateMap<Contact, ContactResource>();
+            CreateMap<ContactResource, Contact>();
         }
     }
 }

@@ -6,24 +6,24 @@ using TesteBackendEnContact.Api.Resources;
 using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Core.Models;
 
-namespace TesteBackendEnContact.Api
+namespace TesteBackendEnContact.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class ContactBookController : ControllerBase
     {
-        private readonly IContactBookService _contactService;
+        private readonly IContactBookService _contactBookService;
         private readonly IMapper _mapper;
         public ContactBookController(IContactBookService contactService, IMapper mapper)
         {
-            _contactService = contactService;
+            _contactBookService = contactService;
             _mapper = mapper;
         }
 
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<ContactBookResource>>> GetAllContactBooks()
         {
-            var companies = await _contactService.GetAllContactBooks();
+            var companies = await _contactBookService.GetAllContactBooks();
             var companiesResource = _mapper.Map<IEnumerable<ContactBook>, IEnumerable<ContactBookResource>>(companies);
 
             return Ok(companiesResource);
@@ -31,7 +31,7 @@ namespace TesteBackendEnContact.Api
         [HttpGet("{id}")]
         public async Task<ActionResult<ContactBookResource>> GetContactBookById(int id)
         {
-            var ContactBook = await _contactService.GetContactBookById(id);
+            var ContactBook = await _contactBookService.GetContactBookById(id);
             var ContactBookResource = _mapper.Map<ContactBook, ContactBookResource>(ContactBook);
 
             return Ok(ContactBookResource);
@@ -40,7 +40,7 @@ namespace TesteBackendEnContact.Api
         [HttpPost("")]
         public async Task<ActionResult<ContactBookResource>> CreateContactBook([FromBody] ContactBookResource ContactBookResource)
         {
-            var ContactBookCreated = await _contactService.CreateContactBook(_mapper.Map<ContactBookResource, ContactBook>(ContactBookResource));
+            var ContactBookCreated = await _contactBookService.CreateContactBook(_mapper.Map<ContactBookResource, ContactBook>(ContactBookResource));
             var ContactBookResourceCreated = _mapper.Map<ContactBook, ContactBookResource>(ContactBookCreated);
 
             return Ok(ContactBookResourceCreated);
@@ -49,13 +49,13 @@ namespace TesteBackendEnContact.Api
         [HttpPut("{id}")]
         public async Task<ActionResult<ContactBookResource>> UpdateContactBook(int id, [FromBody] ContactBookResource ContactBookResource)
         {
-            var ContactBookToBeUpdated = await _contactService.GetContactBookById(id);
+            var ContactBookToBeUpdated = await _contactBookService.GetContactBookById(id);
 
             if (ContactBookToBeUpdated == null)
                 return NotFound();
 
             var ContactBook = _mapper.Map<ContactBookResource, ContactBook>(ContactBookResource);
-            await _contactService.UpdateContactBook(ContactBookToBeUpdated, ContactBook);
+            await _contactBookService.UpdateContactBook(ContactBookToBeUpdated, ContactBook);
             var ContactBookResourceUpdated = _mapper.Map<ContactBook, ContactBookResource>(ContactBook);
 
             return Ok(ContactBookResourceUpdated);
@@ -64,12 +64,12 @@ namespace TesteBackendEnContact.Api
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteContactBook(int id)
         {
-            var ContactBookToBeDeleted = await _contactService.GetContactBookById(id);
+            var ContactBookToBeDeleted = await _contactBookService.GetContactBookById(id);
 
             if (ContactBookToBeDeleted == null)
                 return NotFound();
 
-            await _contactService.DeleteContactBook(ContactBookToBeDeleted);
+            await _contactBookService.DeleteContactBook(ContactBookToBeDeleted);
 
             return NoContent();
         }

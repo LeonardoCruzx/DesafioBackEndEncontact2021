@@ -25,7 +25,7 @@ namespace TesteBackendEnContact.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<Paginator<CompanyResource>>> GetAllCompanies([FromQuery] QueryParams queryParams)
         {
-            var paginatedCompanies = await _companyService.GetAllCompaniesPaginated(queryParams.Page, queryParams.PostsPerPage);
+            var paginatedCompanies = await _companyService.GetAllCompaniesPaginated(queryParams.Page, queryParams.ItemsPerPage);
             var paginatedCompaniesResource =  new Paginator<CompanyResource>(_mapper.Map<IEnumerable<Company>, IEnumerable<CompanyResource>>(paginatedCompanies.Data), paginatedCompanies.Metadata);
             return Ok(paginatedCompaniesResource);
         }
