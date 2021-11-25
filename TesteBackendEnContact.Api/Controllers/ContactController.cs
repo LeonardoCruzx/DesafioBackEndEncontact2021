@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TesteBackendEnContact.Api.Resources;
 using TesteBackendEnContact.Api.Resources.Contact;
+using TesteBackendEnContact.Core.Filters;
 using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Core.Models;
 using TesteBackendEnContact.Core.Pagination;
@@ -23,9 +24,9 @@ namespace TesteBackendEnContact.Api.Controllers
         }
 
         [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<ContactResource>>> GetAllContacts()
+        public async Task<ActionResult<IEnumerable<ContactResource>>> GetAllContacts([FromQuery] ContactFilter filter)
         {
-            var companies = await _contactService.GetAllContactsPaginatedWithContactBook();
+            var companies = await _contactService.GetAllContactsPaginatedWithContactBook(filter);
             var companiesResource = new Paginator<ContactResource>(_mapper.Map<IEnumerable<Contact>, IEnumerable<ContactResource>>(companies.Data), companies.Metadata);
 
             return Ok(companiesResource);

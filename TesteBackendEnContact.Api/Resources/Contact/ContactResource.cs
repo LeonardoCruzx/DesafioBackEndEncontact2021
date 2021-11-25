@@ -8,5 +8,7 @@ namespace TesteBackendEnContact.Api.Resources.Contact
         public string Phone { get; set; }
         public int ContactBookId { get; set; }
         public ContactBookResource ContactBook { get; set; }
+        public int CompanyID { get; set; }
+        public CompanyResource Company { get; set; }
     }
 }

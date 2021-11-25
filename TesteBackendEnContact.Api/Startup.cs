@@ -13,6 +13,8 @@ using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Services;
 using TesteBackendEnContact.Core.Interfaces;
 using AutoMapper;
+using AutoFilterer.Swagger;
+
 
 namespace TesteBackendEnContact
 {
@@ -31,6 +33,7 @@ namespace TesteBackendEnContact
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
+                c.UseAutoFiltererParameters();
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TesteBackendEnContact", Version = "v1" });
             });
 

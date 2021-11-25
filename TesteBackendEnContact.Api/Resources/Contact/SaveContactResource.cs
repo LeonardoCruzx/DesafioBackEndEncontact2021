@@ -7,5 +7,6 @@ namespace TesteBackendEnContact.Api.Resources.Contact
         public string Email { get; set; }
         public string Phone { get; set; }
         public int ContactBookId { get; set; }
+        public int CompanyId { get; set; }
     }
 }
