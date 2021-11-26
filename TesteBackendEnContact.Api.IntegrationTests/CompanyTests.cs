@@ -16,9 +16,9 @@ namespace TesteBackendEnContact.Api.IntegrationTests
     public class CompanyTests : IClassFixture<TestFixture<Startup>>
     {
         private readonly HttpClient _client;
-        private readonly string _baseUrl = "/api/Company";
+        public static readonly string _baseUrl = "/api/Company";
 
-        private readonly List<SaveCompanyResource> _companies = new List<SaveCompanyResource>
+        public static readonly List<SaveCompanyResource> _companies = new List<SaveCompanyResource>
         {
             new SaveCompanyResource
             {
@@ -45,7 +45,7 @@ namespace TesteBackendEnContact.Api.IntegrationTests
             _client = fixture.Client;
         }
 
-        private async Task<HttpResponseMessage> CreateCompany(Company company)
+        private async Task<HttpResponseMessage> CreateCompany(SaveCompanyResource company)
         {
             return await _client.PostAsync(_baseUrl, ContentHelper.GetStringContent(company));
         }
@@ -67,13 +67,7 @@ namespace TesteBackendEnContact.Api.IntegrationTests
         [Fact]
         public async Task TestCreateCompany()
         {
-            var company = new Company
-            {
-                Name = "Teste",
-                Cnpj = "12345678901234",
-                Email = "aa"
-            };
-            var response = await _client.PostAsync(_baseUrl, ContentHelper.GetStringContent(company));
+            var response = await _client.PostAsync(_baseUrl, ContentHelper.GetStringContent(_companies[0]));
 
             response.EnsureSuccessStatusCode();
         }
@@ -81,17 +75,11 @@ namespace TesteBackendEnContact.Api.IntegrationTests
         [Fact]
         public async Task TestUpdateCompany()
         {
-            var company = new Company
-            {
-                Name = "Teste",
-                Cnpj = "12345678901234",
-                Email = "aa"
-            };
-            var createCompanyResponse = await CreateCompany(company);
+            var createCompanyResponse = await CreateCompany(_companies[0]);
 
-            var companyCreated = JsonConvert.DeserializeObject<Company>(createCompanyResponse.Content.ReadAsStringAsync().Result);
+            var companyCreated = JsonConvert.DeserializeObject<CompanyResource>(createCompanyResponse.Content.ReadAsStringAsync().Result);
             
-            var response = await _client.PutAsync($"{_baseUrl}/{companyCreated.Id}", ContentHelper.GetStringContent(company));
+            var response = await _client.PutAsync($"{_baseUrl}/{companyCreated.Id}", ContentHelper.GetStringContent(_companies[0]));
 
             response.EnsureSuccessStatusCode();
         }
@@ -99,16 +87,9 @@ namespace TesteBackendEnContact.Api.IntegrationTests
         [Fact]
         public async Task TestDeleteCompany()
         {
-            var company = new Company
-            {
-                Name = "Teste",
-                Cnpj = "12345678901234",
-                Email = "aa"
-            };
+            var createCompanyResponse = await CreateCompany(_companies[0]);
 
-            var createCompanyResponse = await CreateCompany(company);
-
-            var companyCreated = JsonConvert.DeserializeObject<Company>(createCompanyResponse.Content.ReadAsStringAsync().Result);
+            var companyCreated = JsonConvert.DeserializeObject<CompanyResource>(createCompanyResponse.Content.ReadAsStringAsync().Result);
 
             var response = await _client.DeleteAsync($"{_baseUrl}/{companyCreated.Id}");
 
