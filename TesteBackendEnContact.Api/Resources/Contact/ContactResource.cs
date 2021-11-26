@@ -1,4 +1,5 @@
 using TesteBackendEnContact.Api.Resources.Company;
+using TesteBackendEnContact.Api.Resources.ContactBook;
 
 namespace TesteBackendEnContact.Api.Resources.Contact
 {
