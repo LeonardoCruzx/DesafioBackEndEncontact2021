@@ -9,5 +9,7 @@ namespace TesteBackendEnContact.Core.Repositories
     public interface ICompanyRepository : IRepository<Company>
     {
         Task<Paginator<Company>> GetAllCompaniesPaginated(int page = 1, int resultsPerPage = 10);
+
+        Task<Paginator<Contact>> GetContactsFromContactBookOfCompanyWithId(int companyId, int contactBookId, ContactFilter filter, int page = 1, int resultsPerPage = 10);
     }
 }
