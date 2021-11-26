@@ -1,3 +1,5 @@
+using TesteBackendEnContact.Api.Resources.Company;
+
 namespace TesteBackendEnContact.Api.Resources.Contact
 {
     public class ContactResource

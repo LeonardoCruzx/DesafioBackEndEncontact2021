@@ -1,10 +1,7 @@
-using TesteBackendEnContact.Core.Models;
-
-namespace TesteBackendEnContact.Api.Resources
+namespace TesteBackendEnContact.Api.Resources.Company
 {
-    public class CompanyResource
+    public class SaveCompanyResource
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Cnpj { get; set; }
         public string Email { get; set; }
