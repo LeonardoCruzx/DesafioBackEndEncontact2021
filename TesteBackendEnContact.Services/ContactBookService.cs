@@ -38,7 +38,10 @@ namespace TesteBackendEnContact.Services
         }
         public async Task UpdateContactBook(ContactBook contactBookToBeUpdated, ContactBook contactBook)
         {
-            ///TODO: Implement update
+            contactBookToBeUpdated.Name = contactBook.Name;
+            contactBookToBeUpdated.Description = contactBook.Description;
+            contactBookToBeUpdated.CompanyId = contactBook.CompanyId;
+            
             await _unitOfWork.CommitAsync();
         }
 
