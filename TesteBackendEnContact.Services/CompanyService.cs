@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TesteBackendEnContact.Core;
+using TesteBackendEnContact.Core.Filters;
 using TesteBackendEnContact.Core.Interfaces;
 using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Core.Models;
@@ -42,6 +43,11 @@ namespace TesteBackendEnContact.Services
             companyToBeUpdated.Phone = company.Phone;
 
             await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<Paginator<Contact>> GetContactsFromContactBookOfCompanyWithId(int companyId, int contactBookId, ContactFilter filter, int page = 1, int postsPerPage = 10)
+        {
+            return await _unitOfWork.Companies.GetContactsFromContactBookOfCompanyWithId(companyId, contactBookId, filter, page, postsPerPage);
         }
     }
 }
