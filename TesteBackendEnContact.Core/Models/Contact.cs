@@ -8,7 +8,7 @@ namespace TesteBackendEnContact.Core.Models
         public string Phone { get; set; }
         public int ContactBookId { get; set; }
         public ContactBook ContactBook { get; set; }
-        public int CompanyID { get; set; }
+        public int CompanyId { get; set; }
         public Company Company { get; set; }
     }
 }
