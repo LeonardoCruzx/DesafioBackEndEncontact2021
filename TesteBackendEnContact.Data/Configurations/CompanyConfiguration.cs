@@ -8,7 +8,9 @@ namespace TesteBackendEnContact.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Company> builder)
         {
-            
+            builder.ToTable("Companies");
+
+            builder.HasKey(x => x.Id);
         }
     }
 }
