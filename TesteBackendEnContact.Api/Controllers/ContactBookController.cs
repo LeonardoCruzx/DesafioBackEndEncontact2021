@@ -5,6 +5,7 @@ using AutoMapper;
 using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
 using TesteBackendEnContact.Api.Resources;
+using TesteBackendEnContact.Api.Resources.ContactBook;
 using TesteBackendEnContact.Core.Interfaces.Services;
 using TesteBackendEnContact.Core.Models;
 using TesteBackendEnContact.Core.Pagination;
