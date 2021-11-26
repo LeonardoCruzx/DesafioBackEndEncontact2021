@@ -8,6 +8,8 @@ using TesteBackendEnContact.Core.Models;
 using System;
 using TesteBackendEnContact.Core;
 using TesteBackendEnContact.Core.Pagination;
+using TesteBackendEnContact.Core.Filters;
+using TesteBackendEnContact.Api.Resources.Contact;
 
 namespace TesteBackendEnContact.Api.Controllers
 {
@@ -35,6 +37,16 @@ namespace TesteBackendEnContact.Api.Controllers
         {
             var company = await _companyService.GetCompanyById(id);
             var companyResource = _mapper.Map<Company, CompanyResource>(company);
+
+            return Ok(companyResource);
+        }
+        [HttpGet("{companyId}/ContactBook/{contactBookId}/Contacts")]
+        public async Task<ActionResult<Paginator<ContactResource>>> GetCompanyByIdWithContacts(int companyId, int contactBookId, [FromQuery] ContactFilter filter ,[FromQuery] QueryParams queryParams)
+        {
+            var company = await _companyService.GetContactsFromContactBookOfCompanyWithId(companyId, contactBookId, filter, queryParams.Page, queryParams.ItemsPerPage);
+            
+            
+            var companyResource = new Paginator<ContactResource>(_mapper.Map<IEnumerable<Contact>, IEnumerable<ContactResource>>(company.Data), company.Metadata);
 
             return Ok(companyResource);
         }
