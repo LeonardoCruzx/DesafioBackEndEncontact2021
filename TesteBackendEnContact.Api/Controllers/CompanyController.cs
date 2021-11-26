@@ -10,6 +10,7 @@ using TesteBackendEnContact.Core;
 using TesteBackendEnContact.Core.Pagination;
 using TesteBackendEnContact.Core.Filters;
 using TesteBackendEnContact.Api.Resources.Contact;
+using TesteBackendEnContact.Api.Resources.Company;
 
 namespace TesteBackendEnContact.Api.Controllers
 {

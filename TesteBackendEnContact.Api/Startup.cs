@@ -37,7 +37,7 @@ namespace TesteBackendEnContact
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TesteBackendEnContact", Version = "v1" });
             });
 
-            services.AddDbContext<TesteBackendEnContactContext>(options => options.UseSqlite("Data Source=TesteBackendEnContact.db"));
+            services.AddDbContext<TesteBackendEnContactContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             
