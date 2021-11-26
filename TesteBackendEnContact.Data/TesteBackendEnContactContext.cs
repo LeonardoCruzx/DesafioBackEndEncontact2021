@@ -20,6 +20,8 @@ namespace TesteBackendEnContact.Data
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
 
             modelBuilder.ApplyConfiguration(new ContactConfiguration());
+
+            modelBuilder.ApplyConfiguration(new ContactBookConfiguration());
         }
     }
 }
